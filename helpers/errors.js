@@ -16,3 +16,10 @@ class InputError extends Error {
         this.status = 400;
     }
 }
+
+class UnsupportedError extends Error {
+    constructor( message ){
+        super( message );
+        this.status = 400;
+    }
+}
