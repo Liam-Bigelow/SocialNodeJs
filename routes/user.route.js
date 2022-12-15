@@ -1,4 +1,62 @@
 
+const express = require("express");
+const router = express.Router();
+const bcrypt = require("bcrypt");
+
+// bring in user model
+require( "../models/user.model" );
+const User = mongoose.model( "User" );
+
+
+/** 
+ * First define how we are going to handle authentication
+ * 
+ * going to use a local-strategy to deal with user authentication
+ * 
+ * - https://www.passportjs.org/packages/passport-local/
+ * - https://github.com/jaredhanson/passport-local
+ */
+
+
+// configure authentication strategy
+passport.use(new LocalStrategy(function verify(username, password, done) {
+    User.findOne({username: username }).lean()
+    .then( (user) => {
+        if( !user ){
+            return done(null, false, { message: 'User does not exists.' });        
+        }
+
+        // we have a user but need to make sure it is valid
+        bcrypt.compare(password, user.password, (error, isMatch) => {
+            if (error){
+                return done( error );
+            }
+
+            return isMatch ? done( null, user ) : done(null, false, { message: "Password Incorrect." });
+        });
+    })
+    .catch( (error) => {
+        return done( error );
+    });
+}));
+
+// configure session management
+passport.serializeUser(function(user, done) {
+    process.nextTick(function() {
+        done(null, { id: user._id, username: user.username });
+    });
+});
+  
+passport.deserializeUser(function(user, done) {
+    process.nextTick(function() {
+        return done(null, user);
+    });
+});
+
+
+
+
+
 /**
  * -- Task ---
  * 
@@ -6,9 +64,6 @@
  * - user login
  */
 
-
-const express = require("express");
-const router = express.Router();
 
 const {ensureAuth} = require("./middleware/authentication.middleware" );
 
@@ -20,9 +75,11 @@ router.get( "/dashboard", ensureAuth, (req, res) => {
 });
 
 // login
-router.post( "/login", (req, res) => {
-    // should take username and password as body parameters
-});
+router.post('/login', passport.authenticate('local', {
+    successReturnToOrRedirect: '/dashboard',
+    failureRedirect: '/',
+    failureMessage: true
+}));
 
 // register
 router.post( "/register", (req, res) => {
