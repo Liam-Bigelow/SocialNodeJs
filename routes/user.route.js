@@ -32,7 +32,7 @@ passport.use(new LocalStrategy(function verify(username, password, done) {
                 return done( error );
             }
 
-            return isMatch ? done( null, user ) : done(null, false, { message: "Password Incorrect." });
+            return isMatch ? done( null, user ) : done(null, false, { message: "Password incorrect." });
         });
     })
     .catch( (error) => {
