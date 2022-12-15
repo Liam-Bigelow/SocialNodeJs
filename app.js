@@ -22,6 +22,7 @@ const passport = require("passport"); // used to login users
 
 
 // - database -
+mongoose.set('strictQuery', false);
 mongoose.connect( process.env.MONGODB_URI )
 .then( () => {
     console.log( "MongoDB Connected..." );
@@ -29,6 +30,10 @@ mongoose.connect( process.env.MONGODB_URI )
 .catch( (error) => {
     console.error( "MongoDB Connection Failed: \n", error );
 });
+
+// - body parser -
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // - passport -
 app.use(session({
