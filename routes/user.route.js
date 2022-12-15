@@ -81,7 +81,7 @@ router.get( "/dashboard", ensureAuth, (req, res) => {
 
 // login
 router.post('/login', passport.authenticate('local', {
-    successReturnToOrRedirect: '/dashboard',
+    successReturnToOrRedirect: '/user/dashboard',
     failureRedirect: '/',
     failureMessage: true
 }));
