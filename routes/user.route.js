@@ -1,7 +1,12 @@
 
 const express = require("express");
 const router = express.Router();
+
 const bcrypt = require("bcrypt");
+
+const passport = require("passport");
+const LocalStrategy = require('passport-local');
+const mongoose = require("mongoose");
 
 // bring in user model
 require( "../models/user.model" );
@@ -89,7 +94,11 @@ router.post( "/register", (req, res) => {
         res.status( 200 ).json( newUser );
     })
     .catch( (error) => {
-        res.status( 500 ).json( error );
+        console.error( error );
+        res.status( error.status ? error.status: 500 ).send( error );
     })
 });
 
+
+
+module.exports = router;
