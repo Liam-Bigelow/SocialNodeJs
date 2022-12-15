@@ -39,13 +39,13 @@ const register = (username, password) => {
 
         try {
             const usernameIsUsed = await User.exists({username: username});
-            if( !usernameIsUsed ){
+            if( usernameIsUsed ){
                 reject( new UnsupportedError( "Username already used." ) );
                 return;
             }
 
             // if we made it this far the user can be registered
-            password = bcrypt.hash( password, parseInt( process.env.SALT ) ); // need to hash passwords before storing
+            password = await bcrypt.hash( password, parseInt( process.env.SALT ) ); // need to hash passwords before storing
             const userObject = { username, password };
             const newUser = new User( userObject );
             await newUser.save();
