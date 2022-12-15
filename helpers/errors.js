@@ -23,3 +23,10 @@ class UnsupportedError extends Error {
         this.status = 400;
     }
 }
+
+
+module.exports = {
+    DatabaseError,
+    InputError,
+    UnsupportedError
+}
