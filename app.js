@@ -6,6 +6,8 @@
 const express = require("express");
 const app = express();
 
+const session = require('express-session');
+
 const dotenv = require("dotenv"); // store secret keys in env file
 dotenv.config();
 
@@ -18,6 +20,8 @@ const passport = require("passport"); // used to login users
 
 // ### Prepare Middleware START ###
 
+
+// - database -
 mongoose.connect( process.env.MONGODB_URI )
 .then( () => {
     console.log( "MongoDB Connected..." );
@@ -26,10 +30,13 @@ mongoose.connect( process.env.MONGODB_URI )
     console.error( "MongoDB Connection Failed: \n", error );
 });
 
-
-require("./helpers/passport")(passport);
-app.use(passport.initialize());
-app.use(passport.session());
+// - passport -
+app.use(session({
+    secret: 'this is super secret dont copy',
+    resave: false, // don't save session if unmodified
+    saveUninitialized: false
+}));
+app.use(passport.authenticate('session'));
 
 // ### Prepare Middleware END ###
 
