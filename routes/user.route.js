@@ -1,5 +1,4 @@
 
-
 /**
  * -- Task ---
  * 
@@ -22,7 +21,7 @@ router.get( "/dashboard", ensureAuth, (req, res) => {
 
 // login
 router.post( "/login", (req, res) => {
-
+    // should take username and password as body parameters
 });
 
 // register
