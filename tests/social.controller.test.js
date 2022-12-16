@@ -143,6 +143,84 @@ test( "getTweet - fail - non existant id", async () => {
 
 // ------- updateTweet -------
 
+test( "updateTweet - success", async () => {
+    var newTweet;
+    try {
+        const authorId = new mongoose.Types.ObjectId(); // NOTE: in practice this is retrieved from session after authenticated
+        const authorUsername = uuid.v4();
+        newTweet = await controller.createTweet( authorId, authorUsername, "This is an example of a new tweet" );
+        expect( await Tweet.findById( newTweet._id ) ).toBeTruthy();
+
+        // update tweet
+        const updatedMessage = "This is an updated tweet message";
+        await controller.updateTweet( authorId, newTweet._id, updatedMessage );
+
+        const updatedTweet = await Tweet.findById( newTweet._id );
+        expect( updatedTweet.message === updatedMessage ).toBeTruthy();
+    } catch ( error ) {
+        expect( false ).toBe( true ); // force fail
+    } finally {
+        if( newTweet ) {
+            await Tweet.findByIdAndDelete( newTweet._id );
+        }
+    }
+});
+
+test( "updateTweet - fail - unauthorized author", async () => {
+    var newTweet;
+    try {
+        const authorId = new mongoose.Types.ObjectId(); // NOTE: in practice this is retrieved from session after authenticated
+        const authorUsername = uuid.v4();
+        newTweet = await controller.createTweet( authorId, authorUsername, "This is an example of a new tweet" );
+        expect( await Tweet.findById( newTweet._id ) ).toBeTruthy();
+
+        // update tweet
+        const updatedMessage = "This is an updated tweet message";
+        await controller.updateTweet( new mongoose.Types.ObjectId(), newTweet._id, updatedMessage );
+        expect( false ).toBe( true ); // should not get here
+    } catch ( error ) {
+        expect( error instanceof UnsupportedError ).toBeTruthy();
+    } finally {
+        if( newTweet ) {
+            await Tweet.findByIdAndDelete( newTweet._id );
+        }
+    }
+});
+
+test( "updateTweet - fail - no author", async () => {
+    try {
+        const tweetId = uuid.v4();
+        await controller.updateTweet( undefined, tweetId, "This is an example of a new tweet" );
+        expect( false ).toBe( true ); // should not get here
+    } catch ( error ) {
+        expect( error instanceof UnsupportedError ).toBeTruthy();
+    } 
+});
+
+test( "updateTweet - fail - no tweet id", async () => {
+    try {
+        const authorId = new mongoose.Types.ObjectId();
+        await controller.updateTweet( authorId, undefined, "This is an example of a new tweet" );
+        expect( false ).toBe( true ); // should not get here
+    } catch ( error ) {
+        expect( error instanceof InputError ).toBeTruthy();
+    } 
+});
+
+test( "updateTweet - fail - no message", async () => {
+    try {
+        const authorId = new mongoose.Types.ObjectId();
+        const tweetId = uuid.v4();
+        await controller.updateTweet( authorId, tweetId, "" );
+        expect( false ).toBe( true ); // should not get here
+    } catch ( error ) {
+        expect( error instanceof InputError ).toBeTruthy();
+    } 
+});
+
+
+// ------- deleteTweet -------
+
 
 // ------- teardown -------
 
