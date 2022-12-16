@@ -43,6 +43,7 @@ const createTweet = ( authorId, authorUsername, message ) => {
     });
 }
 
+
 const getTweet = ( tweetId ) => {
     return new Promise( (resolve, reject) => {
         if( !tweetId ){
@@ -59,6 +60,7 @@ const getTweet = ( tweetId ) => {
         })
     });
 }
+
 
 const updateTweet = ( tweetId, authorId, newMessage ) => {
     return new Promise( async (resolve, reject) => {
@@ -94,11 +96,37 @@ const updateTweet = ( tweetId, authorId, newMessage ) => {
 }
 
 
+const deleteTweet = ( tweetId, authorId ) => {
+    return new Promise( (resolve, reject) => {
+        if( !tweetId ){
+            reject( new InputError( "Missing tweet id" ) );
+            return;
+        }
+        if( !authorId ){
+            reject( new UnsupportedError( "Users may only delete their own tweets" ) );
+            return;
+        }
+
+        Tweet.findOneAndDelete({_id: tweetId, authorId: authorId}).lean()
+        .then( (delTweet) => {
+            if( !delTweet ){
+                reject( new UnsupportedError( "Unable to delete the specified twice. This could be caused by incorrect credentials or the tweet has already been removed") );
+            } else {
+                resolve( delTweet );
+            }
+        })
+        .catch( (error) => {
+            reject( new DatabaseError( error.message ) );
+        })
+    });
+}
+
+
 module.exports = {
     createTweet,
     getTweet,
     updateTweet,
-    
+    deleteTweet
 }
 
 
