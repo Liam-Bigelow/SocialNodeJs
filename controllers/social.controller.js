@@ -96,7 +96,7 @@ const updateTweet = ( authorId, tweetId, newMessage ) => {
 }
 
 
-const deleteTweet = ( tweetId, authorId ) => {
+const deleteTweet = ( authorId, tweetId ) => {
     return new Promise( (resolve, reject) => {
         if( !tweetId ){
             reject( new InputError( "Missing tweet id" ) );
