@@ -1,7 +1,7 @@
 
 
 
-const ensureAuth = (req, res, next) => {
+const ensureAuthenticated = (req, res, next) => {
     if( req.user ){
         return next();
     } else {
@@ -11,5 +11,5 @@ const ensureAuth = (req, res, next) => {
 
 
 module.exports = {
-    ensureAuth
+    ensureAuthenticated
 }

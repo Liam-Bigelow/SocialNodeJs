@@ -70,12 +70,12 @@ passport.deserializeUser(function(user, done) {
  */
 
 
-const {ensureAuth} = require("./middleware/authentication.middleware" );
+const {ensureAuthenticated} = require("./middleware/authentication.middleware" );
 
 const controller = require( "../controllers/user.controller");
 
 
-router.get( "/dashboard", ensureAuth, (req, res) => {
+router.get( "/dashboard", ensureAuthenticated, (req, res) => {
     res.status(200).send( "User logged in..." );
 });
 

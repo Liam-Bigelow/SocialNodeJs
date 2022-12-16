@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {ensureAuth} = require("./middleware/authentication.middleware" ); // assuming all tweets operations need to be authenticated first
+const {ensureAuthenticated} = require("./middleware/authentication.middleware" ); // assuming all tweets operations need to be authenticated first
 
 const controller = require( "../controllers/social.controller");
 
@@ -13,7 +13,7 @@ const controller = require( "../controllers/social.controller");
 */
 
 
-router.post( "/tweet", ensureAuth, (req, res) => {
+router.post( "/tweet", ensureAuthenticated, (req, res) => {
     controller.createTweet( req.user._id, req.user.username, req.body.message )
     .then( (newTweet) => {
         res.status( 200 ).json( newTweet );
@@ -25,7 +25,7 @@ router.post( "/tweet", ensureAuth, (req, res) => {
 });
 
 
-router.get( "/tweet/:tweetId", ensureAuth, (req, res) => {
+router.get( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
     controller.getTweet( req.params.tweetId )
     .then( (tweet) => {
         res.status( 200 ).json( tweet );
@@ -37,7 +37,7 @@ router.get( "/tweet/:tweetId", ensureAuth, (req, res) => {
 });
 
 
-router.put( "/tweet/:tweetId", ensureAuth, (req, res) => {
+router.put( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
     controller.updateTweet( req.user._id, req.params.tweetId, req.body.message )
     .then( (updatedTweet) => {
         res.status( 200 ).json( updatedTweet );
@@ -49,7 +49,7 @@ router.put( "/tweet/:tweetId", ensureAuth, (req, res) => {
 });
 
 
-router.delete( "/tweet/:tweetId", ensureAuth, (req, res) => {
+router.delete( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
     controller.deleteTweet( req.user._id, req.params.tweetId )
     .then( (deletedTweet) => {
         res.status( 200 ).json( deletedTweet );
