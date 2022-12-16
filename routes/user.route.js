@@ -88,7 +88,6 @@ router.post('/login', passport.authenticate('local', {
 
 // register
 router.post( "/register", (req, res) => {
-    // should take username and password as body parameters
     controller.register( req.body.username, req.body.password )
     .then( (newUser) => {
         res.status( 200 ).json( newUser );
