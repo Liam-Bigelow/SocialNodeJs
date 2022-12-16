@@ -89,7 +89,6 @@ test( "createTweet - fail - missing author username", async () => {
 });
 
 test( "createTweet - fail - missing tweet message", async () => {
-    var newTweet;
     try {
         const authorId = new mongoose.Types.ObjectId(); // NOTE: in practice this is retrieved from session after authenticated
         const authorUsername = uuid.v4();
@@ -102,6 +101,47 @@ test( "createTweet - fail - missing tweet message", async () => {
 
 
 // ------- getTweet -------
+
+test( "getTweet - success", async () => {
+    var newTweet;
+    try {
+        const authorId = new mongoose.Types.ObjectId(); // NOTE: in practice this is retrieved from session after authenticated
+        const authorUsername = uuid.v4();
+        newTweet = await controller.createTweet( authorId, authorUsername, "This is an example of a new tweet" );
+        expect( await Tweet.findById( newTweet._id ) ).toBeTruthy();
+
+        // now retrieve tweet
+        const retrievedTweet = await controller.getTweet( newTweet._id );
+        expect( retrievedTweet.authorUsername == newTweet.authorUsername && retrievedTweet.message === newTweet.message  ).toBeTruthy();
+    } catch ( error ) {
+        expect( false ).toBe( true ); // force fail
+    } finally {
+        if( newTweet ) {
+            await Tweet.findByIdAndDelete( newTweet._id );
+        }
+    }
+});
+
+test( "getTweet - fail - no tweet id", async () => {
+    try {
+        await controller.getTweet( undefined );
+        expect( false ).toBe( true ); // should not get here
+    } catch ( error ) {
+        expect( error instanceof InputError ).toBeTruthy();
+    }
+});
+
+test( "getTweet - fail - non existant id", async () => {
+    try {
+        await controller.getTweet( new mongoose.Types.ObjectId() );
+        expect( false ).toBe( true ); // should not get here
+    } catch ( error ) {
+        expect( error instanceof UnsupportedError ).toBeTruthy();
+    }
+});
+
+
+// ------- updateTweet -------
 
 
 // ------- teardown -------
