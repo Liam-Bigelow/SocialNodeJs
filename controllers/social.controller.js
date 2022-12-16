@@ -62,7 +62,7 @@ const getTweet = ( tweetId ) => {
 }
 
 
-const updateTweet = ( tweetId, authorId, newMessage ) => {
+const updateTweet = ( authorId, tweetId, newMessage ) => {
     return new Promise( async (resolve, reject) => {
         if( !tweetId ){
             reject( new InputError( "Missing tweet id" ) );
