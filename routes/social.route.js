@@ -24,6 +24,7 @@ router.post( "/tweet", ensureAuth, (req, res) => {
     });
 });
 
+
 router.get( "/tweet/:tweetId", ensureAuth, (req, res) => {
     controller.getTweet( req.params.tweetId )
     .then( (tweet) => {
@@ -34,6 +35,7 @@ router.get( "/tweet/:tweetId", ensureAuth, (req, res) => {
         res.status( error.status ? error.status: 500 ).send( error );
     });
 });
+
 
 router.put( "/tweet/:tweetId", ensureAuth, (req, res) => {
     controller.updateTweet( req.user._id, req.params.tweetId, req.body.message )
@@ -46,7 +48,16 @@ router.put( "/tweet/:tweetId", ensureAuth, (req, res) => {
     });
 });
 
+
 router.delete( "/tweet/:tweetId", ensureAuth, (req, res) => {
+    controller.deleteTweet( req.user._id, req.params.tweetId )
+    .then( (deletedTweet) => {
+        res.status( 200 ).json( deletedTweet );
+    })
+    .catch( (error) => {
+        console.error( error );
+        res.status( error.status ? error.status: 500 ).send( error );
+    });
 });
 
 
