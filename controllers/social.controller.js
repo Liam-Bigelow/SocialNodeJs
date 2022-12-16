@@ -53,7 +53,11 @@ const getTweet = ( tweetId ) => {
 
         Tweet.findById( tweetId ).lean()
         .then( ( tweet ) => {
-            resolve( tweet );  
+            if( !tweet ){
+                reject( new UnsupportedError( "Unable to find a tweet with the provided id") );
+            } else {
+                resolve( tweet );  
+            }
         })
         .catch( (error) => {
             reject( new DatabaseError( error.message ) );
