@@ -16,3 +16,7 @@ npm start
 npm install
 npm test
 </code></pre>
+
+## End to End Testing
+this was done in postman. 
+collection to import can be found in ./postman directory
