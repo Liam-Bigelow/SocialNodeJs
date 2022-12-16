@@ -20,7 +20,7 @@ router.post( "/tweet", ensureAuthenticated, (req, res) => {
     })
     .catch( (error) => {
         console.error( error );
-        res.status( error.status ? error.status: 500 ).send( error );
+        res.status( error.status ? error.status: 500 ).json( error );
     });
 });
 
@@ -32,7 +32,7 @@ router.get( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
     })
     .catch( (error) => {
         console.error( error );
-        res.status( error.status ? error.status: 500 ).send( error );
+        res.status( error.status ? error.status: 500 ).json( error );
     });
 });
 
@@ -44,7 +44,7 @@ router.put( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
     })
     .catch( (error) => {
         console.error( error );
-        res.status( error.status ? error.status: 500 ).send( error );
+        res.status( error.status ? error.status: 500 ).json( error );
     });
 });
 
@@ -56,7 +56,7 @@ router.delete( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
     })
     .catch( (error) => {
         console.error( error );
-        res.status( error.status ? error.status: 500 ).send( error );
+        res.status( error.status ? error.status: 500 ).json( error );
     });
 });
 

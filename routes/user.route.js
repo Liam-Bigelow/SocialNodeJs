@@ -94,7 +94,7 @@ router.post( "/register", (req, res) => {
     })
     .catch( (error) => {
         console.error( error );
-        res.status( error.status ? error.status: 500 ).send( error );
+        res.status( error.status ? error.status: 500 ).json( error );
     })
 });
 

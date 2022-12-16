@@ -6,6 +6,7 @@
 class DatabaseError extends Error {
     constructor( message ){
         super( message );
+        this.msg = message;
         this.status = 500;
     }
 }
@@ -13,6 +14,7 @@ class DatabaseError extends Error {
 class InputError extends Error {
     constructor( message ){
         super( message );
+        this.msg = message;
         this.status = 400;
     }
 }
@@ -20,6 +22,7 @@ class InputError extends Error {
 class UnsupportedError extends Error {
     constructor( message ){
         super( message );
+        this.msg = message;
         this.status = 400;
     }
 }
