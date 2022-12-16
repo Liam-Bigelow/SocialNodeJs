@@ -20,7 +20,7 @@ const Tweet = mongoose.model( "Tweet" );
 const createTweet = ( authorId, authorUsername, message ) => {
     return new Promise( async (resolve, reject) => {
         if( !authorId || !authorUsername ){
-            reject( new InputError( "Missing author details" ) );
+            reject( new UnsupportedError( "Missing author details" ) );
             return;
         }
         if( !message ){
