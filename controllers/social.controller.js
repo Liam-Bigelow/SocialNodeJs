@@ -60,10 +60,44 @@ const getTweet = ( tweetId ) => {
     });
 }
 
+const updateTweet = ( tweetId, authorId, newMessage ) => {
+    return new Promise( async (resolve, reject) => {
+        if( !tweetId ){
+            reject( new InputError( "Missing tweet id" ) );
+            return;
+        }
+        if( !authorId ){
+            reject( new UnsupportedError( "Users may only update their own tweets" ) );
+            return;
+        }
+        if( !newMessage ){
+            reject( new InputError( "Missing message" ) );
+            return;
+        }
+
+        try {
+            var tweetToUpdate = await Tweet.findOne({ _id: tweetId, authorId: authorId });
+            if( !tweetToUpdate ){
+                // unable to find a tweet with given values
+                reject( new UnsupportedError( "Unable to find a tweet with the provided values") );
+                return;
+            }
+
+            tweetToUpdate.message = newMessage;
+            const updatedTweet = await tweetToUpdate.save();
+
+            resolve( updatedTweet.toObject() );
+        } catch( error ) {
+            reject( new DatabaseError( error.message ) );
+        }
+    });
+}
+
 
 module.exports = {
     createTweet,
     getTweet,
+    updateTweet,
     
 }
 
