@@ -17,6 +17,15 @@ const Tweet = mongoose.model( "Tweet" );
 
 // ### Controller functions ###
 
+
+/**
+ * @description create a new user generated tweet
+ * 
+ * @param {mongoose.Types.ObjectId} authorId 
+ * @param {String} authorUsername 
+ * @param {String} message 
+ * @returns json representation of new tweet
+ */
 const createTweet = ( authorId, authorUsername, message ) => {
     return new Promise( async (resolve, reject) => {
         if( !authorId || !authorUsername ){
@@ -44,6 +53,12 @@ const createTweet = ( authorId, authorUsername, message ) => {
 }
 
 
+/**
+ * @description retrieve a specific tweet
+ * 
+ * @param {mongoose.Types.ObjectId} tweetId 
+ * @returns json representation of the tweet
+ */
 const getTweet = ( tweetId ) => {
     return new Promise( (resolve, reject) => {
         if( !tweetId ){
@@ -66,6 +81,14 @@ const getTweet = ( tweetId ) => {
 }
 
 
+/**
+ * @description update specified tweet with new message
+ * 
+ * @param {mongoose.Types.ObjectId} authorId 
+ * @param {mongoose.Types.ObjectId} tweetId 
+ * @param {String} newMessage 
+ * @returns json representation of the updated tweet
+ */
 const updateTweet = ( authorId, tweetId, newMessage ) => {
     return new Promise( async (resolve, reject) => {
         if( !tweetId ){
@@ -100,6 +123,13 @@ const updateTweet = ( authorId, tweetId, newMessage ) => {
 }
 
 
+/**
+ * @description delete tweet. Can only be deleted by author
+ * 
+ * @param {mongoose.Types.ObjectId} authorId 
+ * @param {mongoose.Types.ObjectId} tweetId 
+ * @returns json representation of the deleted tweet
+ */
 const deleteTweet = ( authorId, tweetId ) => {
     return new Promise( (resolve, reject) => {
         if( !tweetId ){

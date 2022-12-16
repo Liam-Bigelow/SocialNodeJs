@@ -19,6 +19,14 @@ const User = mongoose.model( "User" );
 
 // ### Controller functions ###
 
+
+/**
+ * @description register a new user to the database
+ * 
+ * @param {String} username 
+ * @param {String} password string that will be hashed
+ * @returns a json representation of the user object in the database
+ */
 const register = (username, password) => {
     return new Promise(async (resolve, reject) => {
         /**
