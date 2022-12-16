@@ -14,7 +14,7 @@ const controller = require( "../controllers/social.controller");
 
 
 router.post( "/tweet", ensureAuthenticated, (req, res) => {
-    controller.createTweet( req.user._id, req.user.username, req.body.message )
+    controller.createTweet( req.user.id, req.user.username, req.body.message )
     .then( (newTweet) => {
         res.status( 200 ).json( newTweet );
     })
@@ -38,7 +38,7 @@ router.get( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
 
 
 router.put( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
-    controller.updateTweet( req.user._id, req.params.tweetId, req.body.message )
+    controller.updateTweet( req.user.id, req.params.tweetId, req.body.message )
     .then( (updatedTweet) => {
         res.status( 200 ).json( updatedTweet );
     })
@@ -50,7 +50,7 @@ router.put( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
 
 
 router.delete( "/tweet/:tweetId", ensureAuthenticated, (req, res) => {
-    controller.deleteTweet( req.user._id, req.params.tweetId )
+    controller.deleteTweet( req.user.id, req.params.tweetId )
     .then( (deletedTweet) => {
         res.status( 200 ).json( deletedTweet );
     })
