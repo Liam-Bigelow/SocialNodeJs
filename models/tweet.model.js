@@ -9,7 +9,7 @@
 const mongoose = require("mongoose" );
 const Schema = mongoose.Schema;
 
-const Tweet = new Schema({
+const TweetSchema = new Schema({
     authorId: {
         required: true,
         type: Schema.Types.ObjectId
@@ -28,4 +28,4 @@ const Tweet = new Schema({
     }
 })
 
-mongoose.model("Tweet", Tweet);
+mongoose.model("Tweet", TweetSchema);

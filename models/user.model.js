@@ -9,7 +9,7 @@
 const mongoose = require("mongoose" );
 const Schema = mongoose.Schema;
 
-const User = new Schema({
+const UserSchema = new Schema({
     username: {
         required: true,
         type: String
@@ -24,4 +24,4 @@ const User = new Schema({
     }
 })
 
-mongoose.model("User", User);
+mongoose.model("User", UserSchema);
